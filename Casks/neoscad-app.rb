@@ -2,8 +2,8 @@
 # the macOS app. (The `neoscad` formula, for the command-line tool, is
 # generated and pushed to the same tap by cargo-dist's release workflow.)
 #
-# scripts/release/fill-cask.sh fills 0.2.1, 202 (the DMG's build
-# number) and a88457eb8e64139d816d1c83bea5811f23964bd213880e5f6a232ca1f527ced4, and .github/workflows/publish-macos-app.yml
+# scripts/release/fill-cask.sh fills 0.3.0-rc.1, 238 (the DMG's build
+# number) and 94acab75d6aca9fd2014b84fb17a13f46088a2e6ac9851b015cee7f3c8b163a1, and .github/workflows/publish-macos-app.yml
 # pushes the result to the tap once the notarized DMG is attached to the
 # release. Only a notarized DMG belongs here: Homebrew disabled OpenSCAD's
 # own cask in September 2026 because it failed Gatekeeper
@@ -12,10 +12,16 @@
 # No `binary` stanza and so no `conflicts_with formula: "neoscad"`: the app
 # bundle carries no command-line tool (the DMG's universal CLI ships
 # beside it, not inside it), so the cask and the formula install nothing
-# in common. No `auto_updates`: the app does not update itself.
+# in common.
+#
+# `auto_updates true`: the app updates itself with Sparkle (docs/release.md,
+# "The macOS app's updates"), so `brew upgrade` leaves it alone unless
+# given --greedy, and Homebrew and Sparkle don't both replace the app.
+# Every cask this template fills is for an app with the update key:
+# scripts/apple/release.sh refuses to notarize one without it.
 cask "neoscad-app" do
-  version "0.2.1,202"
-  sha256 "a88457eb8e64139d816d1c83bea5811f23964bd213880e5f6a232ca1f527ced4"
+  version "0.3.0-rc.1,238"
+  sha256 "94acab75d6aca9fd2014b84fb17a13f46088a2e6ac9851b015cee7f3c8b163a1"
 
   url "https://github.com/neoscad/neoscad/releases/download/v#{version.csv.first}/NeoSCAD-#{version.csv.first}-#{version.csv.second}.dmg"
   name "NeoSCAD"
@@ -37,9 +43,11 @@ cask "neoscad-app" do
     end
   end
 
-  # apple/project.yml's deploymentTarget, macOS 15.0. A bare symbol is a
-  # minimum: current Homebrew (rubocop Homebrew/OSDependsOn) rewrites
-  # ">= :sequoia" to it and spells a maximum `depends_on maximum_macos:`.
+  # auto_updates: see the top. depends_on: apple/project.yml's
+  # deploymentTarget, macOS 15.0. A bare symbol is a minimum: current
+  # Homebrew (rubocop Homebrew/OSDependsOn) rewrites ">= :sequoia" to it
+  # and spells a maximum `depends_on maximum_macos:`.
+  auto_updates true
   depends_on macos: :sequoia
 
   app "NeoSCAD.app"
@@ -53,6 +61,7 @@ cask "neoscad-app" do
     "~/Library/Caches/org.neoscad.NeoSCAD",
     "~/Library/Containers/org.neoscad.NeoSCAD.QuickLook",
     "~/Library/Containers/org.neoscad.NeoSCAD.Thumbnail",
+    "~/Library/HTTPStorages/org.neoscad.NeoSCAD",
     "~/Library/Preferences/org.neoscad.NeoSCAD.plist",
     "~/Library/Saved Application State/org.neoscad.NeoSCAD.savedState",
     "~/Library/WebKit/org.neoscad.NeoSCAD",
