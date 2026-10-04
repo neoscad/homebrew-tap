@@ -2,17 +2,23 @@
 # the macOS app. (The `neoscad` formula, for the command-line tool, is
 # generated and pushed to the same tap by cargo-dist's release workflow.)
 #
-# scripts/release/fill-cask.sh fills 0.3.1, 247 (the DMG's build
-# number) and 1b6a4a350239375441dc72feb767c4a481e72a6ae91ddc8e37f197761986b064, and .github/workflows/publish-macos-app.yml
+# scripts/release/fill-cask.sh fills 0.4.0, 264 (the DMG's build
+# number) and 5a38e849914aa642a3176978a53b22f857c9fd509c3bd5b87efbc29229b51359, and .github/workflows/publish-macos-app.yml
 # pushes the result to the tap once the notarized DMG is attached to the
 # release. Only a notarized DMG belongs here: Homebrew disabled OpenSCAD's
 # own cask in September 2026 because it failed Gatekeeper
 # (docs/packaging.md).
 #
-# No `binary` stanza and so no `conflicts_with formula: "neoscad"`: the app
-# bundle carries no command-line tool (the DMG's universal CLI ships
-# beside it, not inside it), so the cask and the formula install nothing
-# in common.
+# No `binary` stanza, on purpose, and so no `conflicts_with formula:
+# "neoscad"`. The app does carry the CLI (NeoSCAD.app/Contents/Helpers/
+# neoscad), but for AI agent clients only: the app writes their configs
+# with the absolute path of a link it keeps at ~/Library/Application
+# Support/NeoSCAD/bin/neoscad, so nothing depends on PATH (docs/mcp.md,
+# "Setup from the apps"). Exposing it as a `binary` would put a second
+# `neoscad` in Homebrew's bin, which conflicts with the `neoscad` formula
+# (the owner's decision, 2026-10-02): `brew install neoscad/tap/neoscad`
+# remains the way to get the command line in a terminal, and the cask and
+# the formula still install nothing in common.
 #
 # `auto_updates true`: the app updates itself with Sparkle (docs/release.md,
 # "The macOS app's updates"), so `brew upgrade` leaves it alone unless
@@ -20,8 +26,8 @@
 # Every cask this template fills is for an app with the update key:
 # scripts/apple/release.sh refuses to notarize one without it.
 cask "neoscad-app" do
-  version "0.3.1,247"
-  sha256 "1b6a4a350239375441dc72feb767c4a481e72a6ae91ddc8e37f197761986b064"
+  version "0.4.0,264"
+  sha256 "5a38e849914aa642a3176978a53b22f857c9fd509c3bd5b87efbc29229b51359"
 
   url "https://github.com/neoscad/neoscad/releases/download/v#{version.csv.first}/NeoSCAD-#{version.csv.first}-#{version.csv.second}.dmg"
   name "NeoSCAD"
@@ -54,10 +60,12 @@ cask "neoscad-app" do
 
   # The Quick Look preview and thumbnail extensions are sandboxed, so they
   # keep their own containers under their own bundle ids; the app's editor
-  # is a WKWebView, which keeps WebKit data under the app's.
+  # is a WKWebView, which keeps WebKit data under the app's. Application
+  # Support/NeoSCAD holds the CLI link agent configs name (see the top).
   zap trash: [
     "~/Library/Application Scripts/org.neoscad.NeoSCAD.QuickLook",
     "~/Library/Application Scripts/org.neoscad.NeoSCAD.Thumbnail",
+    "~/Library/Application Support/NeoSCAD",
     "~/Library/Caches/org.neoscad.NeoSCAD",
     "~/Library/Containers/org.neoscad.NeoSCAD.QuickLook",
     "~/Library/Containers/org.neoscad.NeoSCAD.Thumbnail",
