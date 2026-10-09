@@ -2,8 +2,8 @@
 # the macOS app. (The `neoscad` formula, for the command-line tool, is
 # generated and pushed to the same tap by cargo-dist's release workflow.)
 #
-# scripts/release/fill-cask.sh fills 0.5.0, 317 (the DMG's build
-# number) and 3596c64846e9c9c50847709851bb736212240422bcfc057836d33fd09bbc4bbc, and .github/workflows/publish-macos-app.yml
+# scripts/release/fill-cask.sh fills 0.6.0, 335 (the DMG's build
+# number) and 66032bfeaabb0e575a6775310b27072292e1b0ad996f4e314f3d0ec17cf8b1d1, and .github/workflows/publish-macos-app.yml
 # pushes the result to the tap once the notarized DMG is attached to the
 # release. Only a notarized DMG belongs here: Homebrew disabled OpenSCAD's
 # own cask in September 2026 because it failed Gatekeeper
@@ -26,8 +26,8 @@
 # Every cask this template fills is for an app with the update key:
 # scripts/apple/release.sh refuses to notarize one without it.
 cask "neoscad-app" do
-  version "0.5.0,317"
-  sha256 "3596c64846e9c9c50847709851bb736212240422bcfc057836d33fd09bbc4bbc"
+  version "0.6.0,335"
+  sha256 "66032bfeaabb0e575a6775310b27072292e1b0ad996f4e314f3d0ec17cf8b1d1"
 
   url "https://github.com/neoscad/neoscad/releases/download/v#{version.csv.first}/NeoSCAD-#{version.csv.first}-#{version.csv.second}.dmg"
   name "NeoSCAD"
