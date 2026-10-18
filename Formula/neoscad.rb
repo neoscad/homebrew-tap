@@ -1,25 +1,25 @@
 class Neoscad < Formula
   desc "The neoscad command-line tool (OpenSCAD-compatible flags)"
   homepage "https://neoscad.org"
-  version "0.6.2"
+  version "0.7.0"
   if OS.mac?
     if Hardware::CPU.arm?
-      url "https://github.com/neoscad/neoscad/releases/download/v0.6.2/neoscad-cli-aarch64-apple-darwin.tar.xz"
-      sha256 "aab9b57e71bee751d8b9ad1e8163e8dbbe754d938f528333000fd3148fb1a2a0"
+      url "https://github.com/neoscad/neoscad/releases/download/v0.7.0/neoscad-cli-aarch64-apple-darwin.tar.xz"
+      sha256 "71064f74fe5b62dabcf92e2d88d5a168f8294a27e6dc77aaa63856078e1a04f7"
     end
     if Hardware::CPU.intel?
-      url "https://github.com/neoscad/neoscad/releases/download/v0.6.2/neoscad-cli-x86_64-apple-darwin.tar.xz"
-      sha256 "0962ceee04635b4cbb2b5b158cee4a8763f1ec39f378c0cef6bc8376a3b7dd80"
+      url "https://github.com/neoscad/neoscad/releases/download/v0.7.0/neoscad-cli-x86_64-apple-darwin.tar.xz"
+      sha256 "d9ae08eb3334e91fac4abf2563ab51651281368f69d7b2c3ef05aea5f374d81c"
     end
   end
   if OS.linux?
     if Hardware::CPU.arm?
-      url "https://github.com/neoscad/neoscad/releases/download/v0.6.2/neoscad-cli-aarch64-unknown-linux-gnu.tar.xz"
-      sha256 "d284d435fe581fa0c396e6205a99cf74528a610f04a44333ccdcfe7ff18c8227"
+      url "https://github.com/neoscad/neoscad/releases/download/v0.7.0/neoscad-cli-aarch64-unknown-linux-gnu.tar.xz"
+      sha256 "b71e64c103dd1043bc798913e680d88fd2bada87c64bcc717c74524180358f39"
     end
     if Hardware::CPU.intel?
-      url "https://github.com/neoscad/neoscad/releases/download/v0.6.2/neoscad-cli-x86_64-unknown-linux-gnu.tar.xz"
-      sha256 "57450282dcba5ecc3ac5c1d17845bfe2ceddd456c9d4e0756d4d8640dcd86b7b"
+      url "https://github.com/neoscad/neoscad/releases/download/v0.7.0/neoscad-cli-x86_64-unknown-linux-gnu.tar.xz"
+      sha256 "d4041aa6a3eb61d11f44ad937912fabe7805b9bc32a2808b2c8abb2af423116b"
     end
   end
   license "GPL-2.0-or-later"
